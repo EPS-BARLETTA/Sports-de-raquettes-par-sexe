@@ -80,9 +80,20 @@ const createPools=()=>{if(!active||!players.length)return;if(active.pools.length
 const changeScore=(poolId,gameId,key,value)=>update(c=>({...c,pools:c.pools.map(p=>p.id===poolId?{...p,games:p.games.map(g=>g.id===gameId?{...g,[key]:value}:g)}:p)}));
 const completed=p=>p.games.every(m=>m.sa!==''&&m.sb!=='');
 const advance=()=>{if(!active?.pools.length||!active.pools.every(completed)){alert('Terminez toutes les rencontres avant de passer à la rotation suivante.');return}
-const next=[];for(const gender of ['F','G']){const ps=active.pools.filter(p=>p.gender===gender).sort((a,b)=>a.level-b.level),rankings=ps.map(ranking);ps.forEach((p,i)=>{let ids=rankings[i].map(r=>r.id);if(ids.length>1&&i>0){const incoming=rankings[i-1].at(-1).id;ids=ids.filter(x=>x!==rankings[i][0].id);ids.unshift(incoming)}
-if(i<ps.length-1&&rankings[i+1].length>1){ids=ids.filter(x=>x!==rankings[i].at(-1).id);ids.push(rankings[i+1][0].id)}
-next.push({...p,id:uid(),ids,games:games(ids)})})}
+const next=[];for(const gender of ['F','G']){
+ const ps=active.pools.filter(p=>p.gender===gender).sort((a,b)=>a.level-b.level);
+ const ranks=ps.map(p=>ranking(p).map(x=>x.id));
+ ps.forEach((p,i)=>{
+  const standing=ranks[i];
+  let ids=standing.filter((playerId,index)=>!(i>0&&index===0)&&!(i<ps.length-1&&index===standing.length-1));
+  if(i>0)ids.push(ranks[i-1][ranks[i-1].length-1]);
+  if(i<ps.length-1)ids.push(ranks[i+1][0]);
+  next.push({...p,id:uid(),ids,games:games(ids)});
+ });
+}
+const before=active.pools.flatMap(p=>p.ids).sort();
+const after=next.flatMap(p=>p.ids).sort();
+if(before.length!==after.length||before.some((x,i)=>x!==after[i])){alert('Rotation interrompue : incohérence dans les effectifs. Aucune donnée modifiée.');return}
 update(c=>({...c,pools:next,history:[...c.history,{type:'rotation',at:new Date().toISOString(),pools:active.pools.map(p=>({gender:p.gender,level:p.level,ranking:ranking(p)}))}]}))};
 const saveRound=()=>update(c=>({...c,history:[...c.history,{type:'terrains',at:new Date().toISOString(),players:c.players.map(p=>({id:p.id,departure:p.departure,arrival:p.arrival}))}]}));
 const exportHTML=()=>{if(!active)return;const lines=players.slice().sort(sortNames).map(p=>{let h=active.history.map((event,i)=>{if(event.type==='terrains'){const r=event.players.find(x=>x.id===p.id);return r?'<li>Séance '+(i+1)+' : départ '+esc(r.departure??'—')+', arrivée '+esc(r.arrival??'—')+'</li>':''}const po=event.pools.find(x=>x.ids?.includes(p.id)||x.ranking?.some(y=>y.id===p.id));if(!po)return '';let position=po.ranking?.findIndex(x=>x.id===p.id);return '<li>'+esc(event.type)+' : '+(po.gender==='F'?'Filles':'Garçons')+', poule '+po.level+(position>=0?', rang '+(position+1):'')+'</li>'}).join('');return '<section><h2>'+esc(p.name)+' ('+esc(p.sex)+')</h2><ol>'+h+'</ol></section>'}).join('');download('bilan-raquettes-'+active.name.replace(/[^a-z0-9]/gi,'-')+'.html','<!doctype html><html lang="fr"><meta charset="utf-8"><title>Bilan '+esc(active.name)+'</title><style>body{font:16px system-ui;max-width:850px;margin:32px auto;padding:16px}section{border-top:1px solid #ddd;padding:12px}li{margin:6px}</style><h1>Bilan — '+esc(active.name)+'</h1><p>Export du '+new Date().toLocaleDateString('fr-FR')+'</p>'+lines+'</html>')};
