@@ -93,3 +93,23 @@
 .raquettes-app .class-card-main{min-height:220px}
 .raquettes-app .session-tools{background:#fff}
 @media(max-width:620px){.workspace-heading{padding:12px;gap:5px}.workspace-heading strong{font-size:20px}.raquettes-app .workspace-heading button{padding:8px!important;font-size:12px!important}.raquettes-app .module-nav button{min-height:54px!important}}
+
+/* Cartes d'activites — navigation tactile grand format */
+.raquettes-app .module-nav{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;background:transparent!important;padding:0!important;border:0!important;box-shadow:none!important;margin:20px 0 26px!important}
+.raquettes-app .module-tile{display:flex!important;flex-direction:column;align-items:flex-start;text-align:left;position:relative;min-height:165px!important;background:#fff!important;color:#244268!important;border:2px solid #e2eaf4!important;border-radius:20px!important;padding:21px!important;box-shadow:0 8px 24px #123b7010!important;gap:9px!important}
+.raquettes-app .module-tile:hover{border-color:#abc9eb!important;background:#f7fbff!important;transform:translateY(-2px)}
+.raquettes-app .module-tile.active{border-color:#2169c1!important;background:linear-gradient(150deg,#eef6ff,#fff)!important;box-shadow:0 12px 27px #145aa31d!important}
+.module-tile-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:#eaf2ff;color:#1465bd;font-size:25px}
+.module-tile-title{font-size:18px;font-weight:850;color:#173e73}
+.module-tile-desc{font-size:12px;line-height:1.4;color:#7185a1;max-width:175px}
+.module-tile-arrow{position:absolute;right:18px;top:24px;font-size:22px;color:#6b9ed9}
+.raquettes-app .module-tile.active .module-tile-arrow{color:#1768c5}
+.raquettes-app .content-panel{border-radius:23px;padding:clamp(20px,3vw,38px)}
+.raquettes-app .court-student{min-height:102px!important;padding:15px 9px!important}
+.court-student strong{font-size:14px!important}
+.raquettes-app .court-destination{min-height:165px!important;padding:16px!important}
+.raquettes-app .court-assign-target{min-height:65px!important}
+.attendance-dialog{width:min(760px,100%)!important}
+.attendance-row{min-height:62px!important}
+.raquettes-app .attendance-choice{min-height:47px!important;padding:12px 15px!important;font-size:13px!important}
+@media(max-width:920px){.raquettes-app .module-nav{grid-template-columns:repeat(2,minmax(0,1fr))!important}.raquettes-app .module-tile{min-height:142px!important}}@media(max-width:540px){.raquettes-app .module-tile{padding:15px!important;min-height:138px!important}.module-tile-title{font-size:15px}.module-tile-desc{font-size:11px}}
