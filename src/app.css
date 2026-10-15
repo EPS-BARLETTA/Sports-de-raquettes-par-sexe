@@ -129,3 +129,15 @@
 .raquettes-app .pool-settings button{font-size:16px!important;min-height:58px!important;padding:15px 22px!important}
 .raquettes-app .sex-tabs button{min-height:60px!important;font-size:16px!important}
 .pool-preview-dialog{width:min(720px,100%)!important}.pool-preview-line{background:#f4f8fc;border:1px solid #dfe9f2;border-radius:14px;padding:15px;display:flex;flex-direction:column;gap:12px}.pool-preview-line strong{font-size:18px;color:#224f79}.pool-preview-line>div{display:flex;gap:8px;flex-wrap:wrap}.pool-preview-line span{border-radius:10px;padding:10px 13px;background:#fff;color:#244a68;font-size:14px;font-weight:700;border:1px solid #dce7f2}.pool-preview-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.pool-preview-actions button{min-height:56px!important;font-size:15px!important}.pool-preview-note{font-weight:650;font-size:14px}
+
+/* Deux zones de travail distinctes pour le classement montée-descente */
+.raquettes-app .court-workspace{grid-template-columns:1.05fr .95fr;gap:22px;align-items:start}
+.raquettes-app .students-panel{background:#f4f8ff;border:2px solid #d8e6fb;border-radius:20px;padding:20px;min-width:0}
+.raquettes-app .courts-panel{background:#f6fbf7;border:2px solid #d9ebdd;border-radius:20px;padding:20px;min-width:0}
+.raquettes-app .assignment-panel-title{font-size:20px!important;font-weight:850!important;margin:0 0 17px!important;padding:0 0 14px;border-bottom:2px solid #dce7f7;color:#204f88}
+.raquettes-app .courts-panel .assignment-panel-title{color:#246347;border-bottom-color:#d6e9da}
+.raquettes-app .students-panel .court-student{background:#fff!important;border:2px solid #c9dafa!important;border-left:5px solid #72a3dd!important;border-radius:13px!important}
+.raquettes-app .students-panel .court-student.picked{background:#e0efff!important;border-color:#2b72c6!important}
+.raquettes-app .courts-panel .court-destination{background:#fff!important;border:2px solid #d0e7d7!important;border-radius:15px!important}
+.raquettes-app .courts-panel .court-assign-target{background:#eef8f1!important;border:1px solid #c5e2ce!important}
+@media(max-width:850px){.raquettes-app .court-workspace{grid-template-columns:1fr}.raquettes-app .students-panel,.raquettes-app .courts-panel{padding:15px}}
