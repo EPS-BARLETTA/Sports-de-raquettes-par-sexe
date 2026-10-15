@@ -151,3 +151,15 @@
 /* Accueil epure — informations essentielles en premier */
 .raquettes-app>.app-heading{min-height:160px!important;padding-top:27px!important;padding-bottom:27px!important}.raquettes-app>.app-heading:after{opacity:.35}.app-heading h1{font-size:clamp(30px,3.5vw,44px)!important}.app-heading p{max-width:570px;font-size:14px!important}
 .backup-details{margin:0 0 15px auto;width:max-content;max-width:100%;position:relative}.backup-details summary{cursor:pointer;list-style:none;color:#42617a;font-size:13px;font-weight:750;padding:12px 15px;border:1px solid #dce7ee;border-radius:12px;background:#ffffff;min-height:45px}.backup-details summary:before{content:'▾';margin-right:10px}.backup-details[open] summary{border-radius:12px 12px 0 0}.backup-details .backup-controls{padding:13px;border:1px solid #dce7ee;border-top:0;border-radius:0 0 13px 13px;background:white;margin:0;justify-content:flex-end}.raquettes-app .workspace-heading{margin-bottom:13px;padding:14px 19px}.raquettes-app .session-tools{margin:0 0 18px;background:#fff}.raquettes-app .module-nav{margin-top:0!important}.raquettes-app .module-tile{min-height:145px!important}.raquettes-app .module-tile-title{font-size:19px!important}.raquettes-app .module-tile-desc{font-size:12px!important}.raquettes-app .module-tile-icon{width:40px;height:40px;font-size:22px}
+
+/* Harmonisation des surfaces et encadres EPS : bordures colorees discretes */
+.raquettes-app .content-panel,.raquettes-app .class-overview,.raquettes-app .workspace-heading,.raquettes-app .session-tools{border:1.5px solid #dce8e7!important;border-radius:22px!important;box-shadow:0 8px 28px #173e3c0a!important}
+.raquettes-app .module-tile{border-radius:21px!important;box-shadow:0 8px 24px #173e3c0b!important}
+.raquettes-app .module-tile.active{box-shadow:0 0 0 3px #2b7d761c,0 12px 30px #173e3c16!important}
+.raquettes-app .pool-settings,.raquettes-app .pool-card,.raquettes-app .student-report{border:1.5px solid #dedaf0!important;border-radius:20px!important;box-shadow:0 0 0 3px #8d77bf09!important}
+.raquettes-app .pool-card{background:#fff!important}
+.raquettes-app .students-panel{border-radius:22px!important;box-shadow:0 0 0 3px #6a9bd20c!important}
+.raquettes-app .courts-panel{border-radius:22px!important;box-shadow:0 0 0 3px #70af8310!important}
+.raquettes-app .court-help{border:1px solid #e9dbbd!important;border-radius:15px!important;background:#fcf9f0!important;color:#715e39!important}
+.raquettes-app .help-dialog{border-radius:24px!important;border:1px solid #cbdeda;padding:30px!important;box-shadow:0 28px 75px #082b2952}
+.help-dialog .help-intro{color:#657c75;font-size:15px;max-width:630px}.raquettes-app .help-sections{gap:14px}.raquettes-app .help-sections section{background:#f8fbfa!important;border:1.5px solid #dce8e4!important;border-left:4px solid #6a9c89!important;border-radius:16px!important;padding:20px!important}.raquettes-app .help-sections h3{color:#214f43!important;font-size:17px!important}.raquettes-app .help-sections p{color:#506962!important;font-size:14px!important;line-height:1.65!important}
