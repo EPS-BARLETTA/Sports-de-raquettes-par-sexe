@@ -38,7 +38,7 @@ function parseStudentsCSV(raw){
  const students=[];const seen=new Set();let ignored=0;
  for(const row of rows.slice(1)){
   const name=(row[nameCol]||'').replace(/\s+/g,' ').trim(),gender=norm(row[sexCol]);
-  const sex=gender==='feminin'||gender==='f'||gender==='fille'?'F':gender==='masculin'||gender==='m'||gender==='garcon'||gender==='g'?'G':null;
+  const sex=['feminin','female','f','fille','girl'].includes(gender)?'F':['masculin','male','m','garcon','g','boy'].includes(gender)?'G':null;
   const key=norm(name);
   if(!name||!sex||seen.has(key)){ignored++;continue}
   seen.add(key);const {nom,prenom}=separateName(name);students.push({id:uid(),nom,prenom,name,sex,departure:null,arrival:null});
@@ -69,7 +69,7 @@ const importFile=async(event)=>{
   if(classes.some(c=>c.name.toLocaleLowerCase('fr')===trimmed.toLocaleLowerCase('fr'))){alert('Une classe porte déjà ce nom. Choisis un autre nom : aucune donnée existante ne sera remplacée.');return}
   const c={id:uid(),name:trimmed,players:students,rounds:[],pools:[],history:[]};
   setClasses(cs=>[...cs,c]);setId(c.id);setTab('eleves');
-  alert(students.length+' élèves importés dans '+trimmed+(ignored?' ('+ignored+' ligne(s) ignorée(s)).':'.'));
+  alert(students.length+' élèves importés dans '+trimmed+' : '+students.filter(x=>x.sex==='F').length+' filles et '+students.filter(x=>x.sex==='G').length+' garçons.'+(ignored?' ('+ignored+' ligne(s) ignorée(s)).':''));
  }catch(e){alert('Import impossible : '+e.message)}
  finally{setImportBusy(false)}
 };
