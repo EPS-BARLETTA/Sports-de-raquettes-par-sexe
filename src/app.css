@@ -78,3 +78,18 @@
 .attendance-overlay{position:fixed;inset:0;background:#0d2a2499;z-index:100;display:flex;justify-content:center;align-items:center;padding:20px}.attendance-dialog{background:#fff;width:min(620px,100%);max-height:min(89vh,880px);border-radius:23px;display:flex;flex-direction:column;padding:26px;box-shadow:0 25px 80px #102d2855}.attendance-dialog h2{margin:0 0 8px;color:#164737}.attendance-dialog>p{font-size:13px;color:#688078;margin:0 0 14px}.attendance-rows{overflow-y:auto;flex:1;min-height:0}.attendance-row{display:flex;align-items:center;gap:13px;justify-content:space-between;padding:10px 5px;border-bottom:1px solid #e6eee8}.attendance-row strong{font-size:13px;flex:1;color:#23463a}.attendance-row>div{display:flex;gap:6px}.raquettes-app .attendance-choice{padding:9px 10px!important;min-height:38px!important;font-size:12px;background:#f6f8f6!important;color:#527363!important;border:1px solid #dce7df!important}.raquettes-app .attendance-choice.present.active{background:#e8f6ed!important;color:#167343!important;border:2px solid #259458!important}.raquettes-app .attendance-choice.absent.active{background:#ffebee!important;color:#a82d44!important;border:2px solid #cf5368!important}.raquettes-app .attendance-choice.dispense.active{background:#f5edff!important;color:#7c40a4!important;border:2px solid #a877ce!important}.attendance-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:18px;background:#fff}.attendance-footer span{font-size:12px;color:#688075}@media(max-width:600px){.attendance-dialog{padding:15px}.attendance-row{flex-wrap:wrap}.attendance-row>div{width:100%}.attendance-choice{flex:1}.students-header{flex-wrap:wrap}}
 
 .session-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-end;margin:12px 0 20px;padding:14px;background:#f3f7fc;border:1px solid #dce7f3;border-radius:14px}.session-tools span{margin-right:auto;font-size:13px;font-weight:800;color:#284d7d}.session-tools button{font-size:13px!important}
+
+/* Navigation par espaces : accueil puis classe */
+.workspace-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 20px;padding:16px 20px;border:1px solid #d9e6f2;border-radius:18px;background:#fff;box-shadow:0 8px 24px #1138650c}
+.workspace-heading>div{display:flex;flex-direction:column;align-items:center;gap:3px}
+.workspace-heading strong{font-size:24px;line-height:1.1;color:#1d436c}
+.workspace-heading span{font-size:12px;font-weight:800;color:#7790aa}
+.raquettes-app .workspace-heading button{background:#eef5fb!important;font-size:13px!important;min-height:48px!important}
+.raquettes-app .module-nav{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));background:#fff;border:1px solid #dce7f3;padding:8px!important;gap:7px!important;box-shadow:0 6px 20px #123b5c0a}
+.raquettes-app .module-nav button.active{background:#176ac4!important;color:#fff!important}
+.raquettes-app .content-panel{min-height:300px}
+.raquettes-app .class-card-grid{grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:18px}
+.raquettes-app .class-card{border-radius:20px}
+.raquettes-app .class-card-main{min-height:220px}
+.raquettes-app .session-tools{background:#fff}
+@media(max-width:620px){.workspace-heading{padding:12px;gap:5px}.workspace-heading strong{font-size:20px}.raquettes-app .workspace-heading button{padding:8px!important;font-size:12px!important}.raquettes-app .module-nav button{min-height:54px!important}}
