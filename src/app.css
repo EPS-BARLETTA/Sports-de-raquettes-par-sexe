@@ -17,3 +17,24 @@
 @media(max-width:680px){#root>main.raquettes-app{padding:0 12px 50px!important}.raquettes-app>.app-heading{margin:0 -12px 17px;padding:24px 17px}.raquettes-app .module-nav{gap:3px!important}.module-nav>button{font-size:11px!important;padding:8px 3px!important}.raquettes-app .class-toolbar{padding:12px!important}.raquettes-app .content-panel{padding:16px}.raquettes-app .stats-strip{gap:6px}.stats-strip>div{padding:11px}.stats-strip strong{font-size:20px}.raquettes-app .pool-section article{padding:12px!important}.pool-section article>div{gap:4px!important;padding:8px 4px!important}.pool-section article>div span{min-width:auto!important;max-width:28%;word-wrap:break-word;font-size:12px}.pool-section article>div input{width:51px!important;padding:5px!important}.raquettes-app h2{font-size:21px}}
 
 .raquettes-app .csv-import{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;min-height:45px;padding:11px 16px;border-radius:11px;color:#fff;font-size:14px;font-weight:800;background:#17846c;white-space:nowrap}.raquettes-app .csv-import:hover{background:#106953}.raquettes-app .csv-import input{display:none}
+
+/* Accueil des classes */
+.raquettes-app .class-overview{margin-bottom:22px}
+.raquettes-app .section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 15px}
+.raquettes-app .section-heading h2{margin:2px 0 0;font-size:23px}
+.raquettes-app .section-kicker{font-size:11px;letter-spacing:1.7px;font-weight:800;color:#537aaf}
+.raquettes-app .class-total{background:#dceafe;border-radius:30px;padding:8px 13px;color:#225990;font-size:12px;font-weight:800}
+.raquettes-app .class-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:14px}
+.raquettes-app .class-card{background:#fff;border:2px solid #dfe7f4;border-radius:20px;overflow:hidden;box-shadow:0 8px 25px #1d48740b}
+.raquettes-app .class-card.is-active{border-color:#2878d4;box-shadow:0 9px 22px #2266b324}
+.raquettes-app .class-card-main{display:flex;flex-direction:column;align-items:flex-start;text-align:left;width:100%;background:transparent!important;box-shadow:none!important;border-radius:0!important;padding:20px!important;min-height:198px}
+.raquettes-app .class-icon{font-size:27px;background:#eef5ff;border-radius:12px;padding:8px;margin-bottom:12px}
+.raquettes-app .class-card-title{font-size:23px;font-weight:800;color:#173b6b;margin-bottom:5px}
+.raquettes-app .class-card-count{color:#6b7e95;font-size:13px;margin-bottom:13px}
+.raquettes-app .class-card-breakdown{display:flex;flex-wrap:wrap;gap:7px;font-size:12px;font-weight:800}
+.raquettes-app .class-card-breakdown span{padding:6px 9px;background:#eff4fa;border-radius:8px;color:#506b91}
+.raquettes-app .class-card-link{margin-top:15px;color:#1764bb;font-weight:800;font-size:12px}
+.raquettes-app .class-delete{display:block;width:100%;background:#fff5f5!important;color:#9b3f4d!important;border-top:1px solid #f1dce0!important;border-radius:0!important;font-size:12px!important}
+.raquettes-app .class-delete:hover{background:#ffe2e4!important}
+.raquettes-app .empty-classes{padding:34px 18px;text-align:center;border-radius:20px;border:2px dashed #cbd9ec;background:#f7faff}
+.raquettes-app .empty-classes>span{font-size:38px}.raquettes-app .empty-classes h3{margin:10px 0 4px}.raquettes-app .empty-classes p{color:#6a7e99;margin:0}
