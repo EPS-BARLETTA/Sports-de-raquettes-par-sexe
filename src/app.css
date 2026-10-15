@@ -69,3 +69,5 @@
 .court-assign-target strong{font-size:15px}.court-assign-target small{font-size:11px;color:#617f6e}
 .court-occupants{display:grid;gap:6px;margin-top:10px}.raquettes-app .court-occupant{display:flex;justify-content:space-between;gap:5px;align-items:center;background:#e3f2e8!important;color:#225c3b!important;min-height:34px!important;text-align:left;font-size:11px;font-weight:700;padding:7px!important}.court-occupant span{font-size:18px;color:#9b4040}
 .court-empty-slot{font-size:11px;color:#a1aaa5;padding:7px 4px;border-bottom:1px dashed #dfe8e1}
+
+.backup-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin:0 0 18px}.backup-controls label{display:inline-flex;align-items:center;cursor:pointer;background:#e5f3ee;padding:12px 16px;border-radius:11px;color:#196349;font-weight:800}.backup-controls input{display:none}
