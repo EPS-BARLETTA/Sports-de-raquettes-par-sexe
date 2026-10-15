@@ -49,8 +49,28 @@ function parseStudentsCSV(raw){
 function allocate(players,size){let groups=[];for(let i=0;i<players.length;i+=size)groups.push(players.slice(i,i+size));if(groups.length>1&&groups.at(-1).length===1)groups.at(-2).push(groups.pop()[0]);return groups}
 function games(ids,legs=1){let a=[];for(let leg=1;leg<=legs;leg++)for(let i=0;i<ids.length;i++)for(let j=i+1;j<ids.length;j++)a.push({id:uid(),a:leg===1?ids[i]:ids[j],b:leg===1?ids[j]:ids[i],sa:'',sb:'',leg});return a}
 function ranking(pool){const rows=pool.ids.map(id=>({id,pts:0,for:0,against:0,wins:0,played:0}));for(const m of pool.games){if(m.sa===''||m.sb==='')continue;const a=rows.find(x=>x.id===m.a),b=rows.find(x=>x.id===m.b),sa=Number(m.sa),sb=Number(m.sb);a.played++;b.played++;a.for+=sa;a.against+=sb;b.for+=sb;b.against+=sa;if(sa>sb){a.pts+=3;a.wins++}else if(sb>sa){b.pts+=3;b.wins++}else{a.pts++;b.pts++}}return rows.sort((a,b)=>b.pts-a.pts||b.wins-a.wins||(b.for-b.against)-(a.for-a.against)||b.for-a.for)}
+function schedulePool(pool,leg,courts,withRef){
+ const pending=pool.games.filter(m=>(m.leg||1)===leg);
+ const batches=[];let rest=[...pending];let refCounts={};
+ while(rest.length){
+  const used=new Set(),gamesNow=[];
+  const cap=Math.min(Math.max(1,courts),Math.floor(pool.ids.length/(withRef?3:2)));
+  for(const m of rest){
+   if(gamesNow.length>=cap)break;
+   if(used.has(m.a)||used.has(m.b))continue;
+   const available=pool.ids.filter(id=>id!==m.a&&id!==m.b&&!used.has(id));
+   if(withRef&&!available.length)continue;
+   let referee=null;
+   if(withRef){referee=available.sort((a,b)=>(refCounts[a]||0)-(refCounts[b]||0))[0];used.add(referee);refCounts[referee]=(refCounts[referee]||0)+1}
+   used.add(m.a);used.add(m.b);gamesNow.push({game:m,referee,court:gamesNow.length+1});
+  }
+  if(!gamesNow.length){batches.push({impossible:true,games:rest});break}
+  batches.push({games:gamesNow});const scheduled=new Set(gamesNow.map(x=>x.game.id));rest=rest.filter(x=>!scheduled.has(x.id));
+ }
+ return batches;
+}
 function App(){
-const [chosen,setChosen]=useState([]),[assignStage,setAssignStage]=useState('departure'),[assignCourt,setAssignCourt]=useState(1);const [importBusy,setImportBusy]=useState(false);const [classes,setClasses]=useState(initial),[id,setId]=useState(null),[tab,setTab]=useState('eleves'),[newClass,setNewClass]=useState(''),[student,setStudent]=useState(''),[sex,setSex]=useState('F'),[size,setSize]=useState(4),[mode,setMode]=useState('points'),[target,setTarget]=useState(11),[courtCount,setCourtCount]=useState(8),[selected,setSelected]=useState(null),[genderView,setGenderView]=useState('F'),[legs,setLegs]=useState(1),[referees,setReferees]=useState(false),[roundView,setRoundView]=useState(1);
+const [chosen,setChosen]=useState([]),[assignStage,setAssignStage]=useState('departure'),[assignCourt,setAssignCourt]=useState(1);const [importBusy,setImportBusy]=useState(false);const [classes,setClasses]=useState(initial),[id,setId]=useState(null),[tab,setTab]=useState('eleves'),[newClass,setNewClass]=useState(''),[student,setStudent]=useState(''),[sex,setSex]=useState('F'),[size,setSize]=useState(4),[mode,setMode]=useState('points'),[target,setTarget]=useState(11),[courtCount,setCourtCount]=useState(8),[selected,setSelected]=useState(null),[genderView,setGenderView]=useState('F'),[legs,setLegs]=useState(1),[referees,setReferees]=useState(false),[roundView,setRoundView]=useState(1),[poolView,setPoolView]=useState(null),[poolCourts,setPoolCourts]=useState({});
 useEffect(()=>{localStorage.setItem(KEY,JSON.stringify(classes))},[classes]);
 const active=classes.find(c=>c.id===id);
 const update=f=>setClasses(cs=>cs.map(c=>c.id===id?f(c):c));
@@ -114,7 +134,18 @@ return <main className="raquettes-app"><header className="app-heading"><div clas
 {active.pools.length>0&&<><div className="rotation-header"><div><span className="section-kicker">CHAMPIONNAT</span><h3>Rotation n° {active.rotation||1}</h3></div><span>{active.settings?.courtCount||courtCount} terrain(s) · {active.settings?.legs===2?'Aller-retour':'Aller simple'} · {active.settings?.referees?'Avec arbitrage':'Sans arbitrage'}</span></div>
 <div className="sex-tabs"><button className={genderView==='F'?'active':''} onClick={()=>setGenderView('F')}>♀ Filles ({players.filter(p=>p.sex==='F').length})</button><button className={genderView==='G'?'active':''} onClick={()=>setGenderView('G')}>♂ Garçons ({players.filter(p=>p.sex==='G').length})</button></div>
 <div className="sex-tabs secondary"><button className={roundView===1?'active':''} onClick={()=>setRoundView(1)}>Matchs aller</button>{(active.settings?.legs||1)===2&&<button className={roundView===2?'active':''} onClick={()=>setRoundView(2)}>Matchs retour</button>}</div>
-{active.pools.filter(p=>p.gender===genderView).sort((a,b)=>a.level-b.level).map(p=>{const matches=p.games.filter(m=>(m.leg||1)===roundView);const done=matches.filter(m=>m.sa!==''&&m.sb!=='').length;return <article className="pool-card" key={p.id}><div className="pool-card-top"><h4>Poule {p.level}</h4><span>{done}/{matches.length} matchs</span></div><table><thead><tr><th>Rang / Joueur</th><th>Points</th><th>MJ</th><th>Diff.</th></tr></thead><tbody>{ranking(p).map((r,i)=><tr key={r.id}><td>{i+1}. {name(r.id)}</td><td>{r.pts}</td><td>{r.played}</td><td>{r.for-r.against}</td></tr>)}</tbody></table><div className="match-list">{matches.map((m,i)=><div className="match-row" key={m.id}><span className="match-number">M{i+1}</span><span className="match-player">{name(m.a)}</span><input aria-label={'Score '+name(m.a)} inputMode="numeric" type="number" min="0" value={m.sa} onChange={e=>changeScore(p.id,m.id,'sa',e.target.value)}/><span className="match-dash">–</span><input aria-label={'Score '+name(m.b)} inputMode="numeric" type="number" min="0" value={m.sb} onChange={e=>changeScore(p.id,m.id,'sb',e.target.value)}/><span className="match-player">{name(m.b)}</span>{active.settings?.referees&&<span className="match-ref">Arbitre : {p.ids.find(x=>x!==m.a&&x!==m.b)?name(p.ids.find(x=>x!==m.a&&x!==m.b)):'Externe'}</span>}</div>)}</div></article>})}
+<div className="pool-picker">{active.pools.filter(p=>p.gender===genderView).sort((a,b)=>a.level-b.level).map(p=><button key={p.id} className={(poolView||active.pools.find(x=>x.gender===genderView)?.id)===p.id?'active':''} onClick={()=>setPoolView(p.id)}>Poule {p.level}<small>{p.ids.length} joueurs</small></button>)}</div>
+{active.pools.filter(p=>p.gender===genderView&&p.id===(poolView&&active.pools.some(x=>x.id===poolView&&x.gender===genderView)?poolView:active.pools.find(x=>x.gender===genderView)?.id)).map(p=>{
+const availableCourts=Math.max(1,Number(poolCourts[p.id]||1));
+const batches=schedulePool(p,roundView,availableCourts,!!active.settings?.referees);
+const matches=p.games.filter(m=>(m.leg||1)===roundView);
+const done=matches.filter(m=>m.sa!==''&&m.sb!=='').length;
+return <article className="pool-card" key={p.id}>
+<div className="pool-card-top"><h4>Poule {p.level} · {p.ids.length} joueurs</h4><span>{done}/{matches.length} matchs terminés</span></div>
+<div className="pool-setup"><label>Terrains affectés à cette poule <select value={availableCourts} onChange={e=>setPoolCourts(x=>({...x,[p.id]:Number(e.target.value)}))}>{Array.from({length:Math.max(1,active.settings?.courtCount||courtCount)},(_,i)=><option key={i} value={i+1}>{i+1} terrain{ i>0?'s':''}</option>)}</select></label><span>{active.settings?.referees?'Arbitrage activé':'Sans arbitrage'} · Planning automatique</span></div>
+<table><thead><tr><th>Classement</th><th>Points</th><th>MJ</th><th>Diff.</th></tr></thead><tbody>{ranking(p).map((r,i)=><tr key={r.id}><td>{i+1}. {name(r.id)}</td><td>{r.pts}</td><td>{r.played}</td><td>{r.for-r.against}</td></tr>)}</tbody></table>
+{batches.map((batch,i)=><section className="match-series" key={i}><h4>Série {i+1}</h4>{batch.impossible?<p>Impossible de planifier avec arbitrage : il faut au moins 3 élèves disponibles dans cette poule.</p>:<div className="match-list">{batch.games.map(({game:m,referee,court})=><div className="match-row" key={m.id}><span className="match-number">Terrain {court}</span><span className="match-player">{name(m.a)}</span><input aria-label={'Score '+name(m.a)} inputMode="numeric" type="number" min="0" value={m.sa} onChange={e=>changeScore(p.id,m.id,'sa',e.target.value)}/><span className="match-dash">–</span><input aria-label={'Score '+name(m.b)} inputMode="numeric" type="number" min="0" value={m.sb} onChange={e=>changeScore(p.id,m.id,'sb',e.target.value)}/><span className="match-player">{name(m.b)}</span>{referee&&<span className="match-ref">Arbitre : {name(referee)}</span>}</div>)}</div>}</section>)}
+</article>})}
 <div className="rotation-footer"><p>Termine toutes les rencontres des deux championnats avant de valider. Le premier monte, le dernier descend ; le classement est conservé dans l’historique.</p><button className="primary-action" disabled={!active.pools.every(completed)} onClick={()=>{advance();setRoundView(1)}}>Valider la rotation et préparer la suivante →</button></div></>}</>}
 {tab==='bilan'&&<><h2>Historique et bilans</h2><p>{active.history.length} étapes enregistrées. Export HTML individuel regroupé dans un fichier consultable hors ligne.</p><button className="primary-action" onClick={exportHTML}>Télécharger les bilans HTML</button><ol>{active.history.map((h,i)=><li key={i}>{new Date(h.at).toLocaleString('fr-FR')} — {h.type}</li>)}</ol></>}
 </section></>}
