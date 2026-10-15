@@ -9,13 +9,13 @@ const download=(name,html)=>{const a=document.createElement('a');a.href=URL.crea
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function parseCSV(text){
  const rows=[];let row=[],cell='',quoted=false;
- text=String(text).replace(/^\\uFEFF/,'');
- const first=text.split(/\\r?\\n/,1)[0]||'';
+ text=String(text).replace(/^\uFEFF/,'');
+ const first=text.split(/\r?\n/,1)[0]||'';
  const separator=(first.match(/;/g)||[]).length>=(first.match(/,/g)||[]).length?';':',';
  for(let i=0;i<text.length;i++){const c=text[i];
   if(c==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++}else quoted=!quoted}
   else if(c===separator&&!quoted){row.push(cell.trim());cell=''}
-  else if((c==='\\n'||c==='\\r')&&!quoted){if(c==='\\r'&&text[i+1]==='\\n')i++;row.push(cell.trim());if(row.some(Boolean))rows.push(row);row=[];cell=''}
+  else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell.trim());if(row.some(Boolean))rows.push(row);row=[];cell=''}
   else cell+=c;
  }
  row.push(cell.trim());if(row.some(Boolean))rows.push(row);
@@ -30,14 +30,14 @@ function separateName(full){
 }
 function parseStudentsCSV(raw){
  const rows=parseCSV(raw);if(rows.length<2)throw Error('Le fichier CSV est vide ou ne contient pas de liste.');
- const norm=v=>String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().trim();
+ const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
  const columns=rows[0].map(norm);
  const nameCol=columns.findIndex(x=>x==='eleves'||x==='eleve'||x==='nom prenom'||x==='nom et prenom'||x==='nom');
  const sexCol=columns.findIndex(x=>x==='sexe'||x==='genre');
  if(nameCol<0||sexCol<0)throw Error('Colonnes Élèves et Sexe introuvables. Vérifie le format du CSV.');
  const students=[];const seen=new Set();let ignored=0;
  for(const row of rows.slice(1)){
-  const name=(row[nameCol]||'').replace(/\\s+/g,' ').trim(),gender=norm(row[sexCol]);
+  const name=(row[nameCol]||'').replace(/\s+/g,' ').trim(),gender=norm(row[sexCol]);
   const sex=gender==='feminin'||gender==='f'||gender==='fille'?'F':gender==='masculin'||gender==='m'||gender==='garcon'||gender==='g'?'G':null;
   const key=norm(name);
   if(!name||!sex||seen.has(key)){ignored++;continue}
