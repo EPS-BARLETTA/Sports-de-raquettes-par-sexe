@@ -1,0 +1,17 @@
+{
+  "name": "Sport de raquettes — EPS",
+  "short_name": "Raquettes EPS",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f1f6f3",
+  "theme_color": "#174a43",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
